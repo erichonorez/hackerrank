@@ -1,5 +1,5 @@
 from hypothesis import given, strategies as st
-from hackerrank.problemsolving.sorting.quicksort import quicksort
+from problemsolving.sorting.quicksort import quicksort
 
 
 @given(arr=st.lists(st.integers(), max_size=100))

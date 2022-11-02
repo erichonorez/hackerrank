@@ -1,5 +1,5 @@
 from hypothesis import given, strategies as st
-from hackerrank.problemsolving.sorting.runningtime import insertion_sort, insertion_sort_shifts
+from problemsolving.sorting.runningtime import insertion_sort, insertion_sort_shifts
 
 
 @given(arr=st.lists(st.integers(), max_size=100))
