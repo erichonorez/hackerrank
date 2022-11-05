@@ -1,3 +1,4 @@
+from curses import window
 from queue import SimpleQueue
 from typing import List
 from unittest import expectedFailure
@@ -258,7 +259,7 @@ class SlidingMedianCountingSort():
 
         return sorted
 
-def fraudulent_notifications_counting_sort(trailing_days: int, expenditures: List[int]) -> int:
+def fraudulent_notifications_counting_sort(trailing_days, expenditures):
     median = SlidingMedianCountingSort(trailing_days, 200)
     notification_count = 0
 
@@ -279,12 +280,12 @@ if __name__ == "__main__":
     import time
     import random
 
-    expenditures = [random.randint(0, 200) for i in range(2 * 10**5 + 1)]
+    # expenditures = [random.randint(0, 200) for i in range(2 * 10**5 + 1)]
     
-    t1 = time.time()
-    res = fraudulent_notifications_counting_sort(10**4, expenditures)
-    t2 = time.time()
-    print(f"fraudulent_notifications_counting_sort : {t2 - t1} seconds - {res}")
+    # t1 = time.time()
+    # res = fraudulent_notifications_counting_sort(10**4, expenditures)
+    # t2 = time.time()
+    # print(f"fraudulent_notifications_counting_sort : {t2 - t1} seconds - {res}")
 
     # t1 = time.time()
     # res = fraudulent_notifications_heap(10**3, expenditures)
@@ -296,11 +297,32 @@ if __name__ == "__main__":
     # t2 = time.time()
     # print(f"fraudulent_notifications : {t2 - t1} seconds - {res}")
 
-    t1 = time.time()
-    res = fraudulent_notifications_heap_v2(10**4, expenditures)
-    t2 = time.time()
-    print(f"fraudulent_notifications_heap_v2 : {t2 - t1} seconds - {res}")
+    # t1 = time.time()
+    # res = fraudulent_notifications_heap_v2(10**4, expenditures)
+    # t2 = time.time()
+    # print(f"fraudulent_notifications_heap_v2 : {t2 - t1} seconds - {res}")
 
-    #print(fraudulent_notifications_counting_sort(3, [2,3,4,2,3,6,8,4,5]))
+    # import timeit
+    # print(timeit.timeit(lambda: fraudulent_notifications_counting_sort(10**4, expenditures), number=1))
 
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+    import timeit
 
+    expediture_sizes = [j*10**i for i in range(1, 6) for j in range(1, 10)]
+    
+    times_a = []
+    times_b = []
+    linear = []
+    for size in expediture_sizes:
+        expenditures = [random.randint(0, 200) for x in range(size)]
+        window_size = len(expenditures) // 3
+        times_a.append(timeit.timeit(lambda: fraudulent_notifications_counting_sort(window_size, expenditures), number=1))
+        times_b.append(timeit.timeit(lambda: fraudulent_notifications_heap_v2(window_size, expenditures), number=1))
+        linear.append(size)
+
+    fig, ax = plt.subplots()  # Create a figure containing a single axes.
+    ax.plot(expediture_sizes, times_a)
+    ax.plot(expediture_sizes, times_b)  # Plot some data on the axes.
+
+    fig.savefig("test.png")
